@@ -17,7 +17,7 @@ const Header = () => {
                     <Text style={styles.tabText}>Home</Text>
                 </Pressable>
                 <Pressable style={styles.tab}>
-                    <Text style={styles.tabText}>Stats</Text>
+                    <Text style={styles.tabText}>Prodotti</Text>
                 </Pressable>
                 <Pressable style={styles.tab}>
                     <Text style={styles.tabText}>Clienti</Text>

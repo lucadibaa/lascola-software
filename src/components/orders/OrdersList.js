@@ -1,11 +1,28 @@
-import { View, Text, FlatList } from 'react-native'
+import { useState } from 'react'
+import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native'
+import CustomModal from './CustomModal'
 import OrderRow from './OrderRow'
 
 const orders = [
     {
         id: 304234,
+        orderId: 3,
+        customerId: 0,
+        paid: true,
+        products: [
+            {
+                id: 423,
+                title: 'Tonic',
+                price: 1.00,
+                qty: 2,
+            }
+        ]
+    },
+    {
+        id: 304234,
         orderId: 1,
         customerId: 0,
+        paid: true,
         products: [
             {
                 id: 423,
@@ -31,6 +48,7 @@ const orders = [
         id: 304234,
         orderId: 2,
         customerId: 0,
+        paid: false,
         products: [
             {
                 id: 423,
@@ -55,19 +73,29 @@ const orders = [
 ]
 
 const OrdersList = () => {
-
-    const editedOrders = orders.map(order => order.products.map(product => ({ ...product, id: product.id + order.orderId }))).reduce((a, b) => ([...a, ...b]))
+    // const editedOrders = orders.map(order => order.products.map(product => ({ ...product, id: product.id + order.orderId }))).reduce((a, b) => ([...a, ...b]))
+    const [modalVisible, setModalVisible] = useState(false)
+    const [order, setOrder] = useState(null)
 
     return (
         <View>
             <FlatList
-                // contentContainerStyle={styles.list}
-                data={editedOrders}
+                contentContainerStyle={styles.list}
+                data={orders}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <OrderRow order={item} />}
+                renderItem={({ item }) => <OrderRow order={item} setOrder={setOrder} setModalVisible={setModalVisible} />}
             />
-        </View >
+            <CustomModal order={order} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    list: {
+        paddingVertical: 15,
+        backgroundColor: 'gray',
+        minHeight: '100%'
+    }
+})
 
 export default OrdersList
