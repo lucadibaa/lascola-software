@@ -73,7 +73,6 @@ const orders = [
 ]
 
 const OrdersList = () => {
-    // const editedOrders = orders.map(order => order.products.map(product => ({ ...product, id: product.id + order.orderId }))).reduce((a, b) => ([...a, ...b]))
     const [modalVisible, setModalVisible] = useState(false)
     const [order, setOrder] = useState(null)
 
@@ -83,6 +82,7 @@ const OrdersList = () => {
                 contentContainerStyle={styles.list}
                 data={orders}
                 keyExtractor={item => item.id}
+                listKey={item => item.id}
                 renderItem={({ item }) => <OrderRow order={item} setOrder={setOrder} setModalVisible={setModalVisible} />}
             />
             <CustomModal order={order} modalVisible={modalVisible} setModalVisible={setModalVisible} />

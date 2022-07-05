@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import SearchableDropdown from 'react-native-searchable-dropdown'
 import { AntDesign } from '@expo/vector-icons'
+import { useState } from 'react'
 
 const order = [
     {
@@ -22,6 +24,41 @@ const order = [
     }
 ]
 
+const customers = [
+    {
+        id: 1,
+        name: 'JavaScript',
+    },
+    {
+        id: 2,
+        name: 'Java',
+    },
+    {
+        id: 3,
+        name: 'Ruby',
+    },
+    {
+        id: 4,
+        name: 'React Native',
+    },
+    {
+        id: 5,
+        name: 'PHP',
+    },
+    {
+        id: 6,
+        name: 'Python',
+    },
+    {
+        id: 7,
+        name: 'Go',
+    },
+    {
+        id: 8,
+        name: 'Swift',
+    },
+]
+
 const OrderRow = ({ product }) => {
     return (
         <View style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }}>
@@ -39,6 +76,9 @@ const OrderRow = ({ product }) => {
 }
 
 const OrderInfo = ({ handleSheetClose }) => {
+
+    const [selectedCustomer, setSelectedCustomer] = useState('')
+
     return (
         <View style={styles.container}>
             {/* Close Button */}
@@ -47,6 +87,39 @@ const OrderInfo = ({ handleSheetClose }) => {
                     <AntDesign name="close" size={22} color="#444" />
                 </TouchableOpacity>
             </View>
+            {/* Select Customer */}
+            <SearchableDropdown
+                onItemSelect={customer => setSelectedCustomer(customer.name)}
+                onRemoveItem={() => setSelectedCustomer(null)}
+                containerStyle={{ width: '60%' }}
+                itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }}
+                itemTextStyle={{ color: '#222' }}
+                itemsContainerStyle={{ maxHeight: 130 }}
+                items={customers}
+                resetValue={false}
+                textInputProps={{
+                    placeholder: "Seleziona un cliente",
+                    underlineColorAndroid: "transparent",
+                    value: selectedCustomer,
+                    onChangeText: e => setSelectedCustomer(e),
+                    style: {
+                        padding: 8,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 8,
+                    }
+                }}
+                listProps={{
+                    nestedScrollEnabled: true,
+                }}
+            />
             {/* Table */}
             <View style={styles.table}>
                 <View style={styles.thead}>
@@ -107,6 +180,8 @@ const styles = StyleSheet.create({
     table: {
         width: '90%',
         marginTop: 20,
+        maxHeight: 210,
+        overflow: 'scroll'
     },
     thead: {
         flexDirection: 'row',
@@ -130,7 +205,7 @@ const styles = StyleSheet.create({
     tbody: {
         backgroundColor: 'rgb(243, 244, 246)',
         borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5
+        borderBottomRightRadius: 5,
     },
     tbodyRow: {
         flexDirection: 'row',

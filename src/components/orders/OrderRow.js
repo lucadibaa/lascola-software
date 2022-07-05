@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 
 const ProductRow = ({ product }) => {
-    console.log(product);
     return (
         <View style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }}>
             <View style={{ flex: 2 }} >
@@ -46,6 +45,7 @@ const OrderRow = ({ order, setOrder, setModalVisible }) => {
                         contentContainerStyle={styles.tbody}
                         data={[...order.products, (order.products.length > 1 && { id: -1, title: 'TOTALE', price: order.products.map(o => o.price).reduce((a, b) => a + b) })].filter(p => p)}
                         keyExtractor={product => product.id}
+                        listKey={product => product.id}
                         renderItem={({ item }) => <ProductRow product={item} />}
                     />
                 </View>
