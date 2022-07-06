@@ -2,43 +2,10 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import SearchableDropdown from 'react-native-searchable-dropdown'
 import { AntDesign } from '@expo/vector-icons'
 import { useState } from 'react'
-import { clearProducts, createOrder } from '../../redux/slices/orderSlice'
+import { clearProducts } from '../../redux/slices/orderSlice'
 import { useDispatch, useSelector } from 'react-redux'
-
-const customers = [
-    {
-        id: 1,
-        name: 'JavaScript',
-    },
-    {
-        id: 2,
-        name: 'Java',
-    },
-    {
-        id: 3,
-        name: 'Ruby',
-    },
-    {
-        id: 4,
-        name: 'React Native',
-    },
-    {
-        id: 5,
-        name: 'PHP',
-    },
-    {
-        id: 6,
-        name: 'Python',
-    },
-    {
-        id: 7,
-        name: 'Go',
-    },
-    {
-        id: 8,
-        name: 'Swift',
-    },
-]
+import { db } from '../../../firebase'
+import { addDoc, collection } from '@firebase/firestore'
 
 const OrderRow = ({ product }) => {
     return (
@@ -59,6 +26,7 @@ const OrderRow = ({ product }) => {
 const OrderInfo = ({ handleSheetClose }) => {
 
     const { orderProducts } = useSelector(state => state.order)
+    const { customers } = useSelector(state => state.data)
     const dispatch = useDispatch()
 
     const [selectedCustomer, setSelectedCustomer] = useState('')
@@ -68,20 +36,35 @@ const OrderInfo = ({ handleSheetClose }) => {
         handleSheetClose()
     }
 
-    const hanldeOrder = paid => {
+    const hanldeOrder = async paid => {
+        const customersRef = collection(db, 'customers')
+        const ordersRef = collection(db, 'orders')
         const customer = customers.find(c => c.name === selectedCustomer)
 
-        if (!customer) {
+        if (!customer && selectedCustomer.length > 0) {
             // create new customer
-        }
+            addDoc(customersRef, { name: selectedCustomer })
+                .then(res => {
+                    const customer = { id: res.id, name: selectedCustomer }
+                    const order = {
+                        customerId: customer?.id,
+                        date: new Date().toString(),
+                        paid,
+                        products: orderProducts
+                    }
 
-        const order = {
-            customerId: customer?.id,
-            paid,
-            products: orderProducts
-        }
+                    addDoc(ordersRef, order)
+                })
+        } else {
+            const order = {
+                customerId: customer?.id ? customer.id : null,
+                date: new Date().toString(),
+                paid,
+                products: orderProducts
+            }
 
-        // create new order
+            addDoc(ordersRef, order)
+        }
         dispatch(clearProducts())
         handleSheetClose()
     }
@@ -100,7 +83,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                 onRemoveItem={() => setSelectedCustomer(null)}
                 containerStyle={{ width: '60%' }}
                 itemStyle={{
-                    padding: 10,
+                    padding: 8,
                     marginTop: 2,
                     backgroundColor: '#ddd',
                     borderColor: '#bbb',
@@ -117,7 +100,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                     value: selectedCustomer,
                     onChangeText: e => setSelectedCustomer(e),
                     style: {
-                        padding: 8,
+                        padding: 5,
                         borderWidth: 1,
                         borderColor: '#ccc',
                         borderRadius: 8,
@@ -158,7 +141,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                     <TouchableOpacity style={styles.notPaid} onPress={() => hanldeOrder(false)}>
                         <Text>Non Pagato</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.paid} onPress={() => hanldeOrder(false)}>
+                    <TouchableOpacity style={styles.paid} onPress={() => hanldeOrder(true)}>
                         <Text>Pagato</Text>
                     </TouchableOpacity>
                 </View>

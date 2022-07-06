@@ -1,4 +1,5 @@
 import { View, Text, Modal, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
 
 const ProductRow = ({ product }) => {
     return (
@@ -18,6 +19,8 @@ const ProductRow = ({ product }) => {
 
 const CustomModal = ({ order, modalVisible, setModalVisible }) => {
 
+    const { customers } = useSelector(state => state.data)
+
     if (!order) return null
 
     const handlePress = paid => {
@@ -35,7 +38,7 @@ const CustomModal = ({ order, modalVisible, setModalVisible }) => {
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <View>
-                        <Text style={{ fontSize: 15 }}>Il cliente <Text style={{ fontWeight: '600' }}>Giovanni Rana</Text> ha pagato</Text>
+                        <Text style={{ fontSize: 15 }}>Il cliente <Text style={{ fontWeight: '600' }}>{customers.find(customer => customer.id === order.customerId)?.name}</Text> ha pagato</Text>
                         <View style={styles.table}>
                             <View style={styles.thead}>
                                 <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>

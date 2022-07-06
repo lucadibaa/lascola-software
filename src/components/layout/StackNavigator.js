@@ -12,7 +12,7 @@ import { collection, onSnapshot } from "firebase/firestore"
 import { db } from "../../../firebase"
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setProducts } from '../../redux/slices/dataSlice'
+import { setCustomers, setOrders, setProducts } from '../../redux/slices/dataSlice'
 
 const Tab = createBottomTabNavigator()
 
@@ -21,13 +21,24 @@ const TabNavigator = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const products = collection(db, 'products')
-        const getData = onSnapshot(products, snapshot => {
+        const productsRef = collection(db, 'products')
+        const customersRef = collection(db, 'customers')
+        const ordersRef = collection(db, 'orders')
+
+        const getProducts = onSnapshot(productsRef, snapshot => {
             dispatch(setProducts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
+        })
+        const getCustomers = onSnapshot(customersRef, snapshot => {
+            dispatch(setCustomers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
+        })
+        const getOrders = onSnapshot(ordersRef, snapshot => {
+            dispatch(setOrders(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
         })
 
         return () => {
-            getData()
+            getProducts()
+            getCustomers()
+            getOrders()
         }
     }, [])
 

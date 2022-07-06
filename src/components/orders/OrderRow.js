@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { useSelector } from 'react-redux'
 
 const ProductRow = ({ product }) => {
     return (
@@ -18,6 +19,8 @@ const ProductRow = ({ product }) => {
 
 const OrderRow = ({ order, setOrder, setModalVisible }) => {
 
+    const { customers } = useSelector(state => state.data)
+
     return (
         <View style={styles.container}>
             <View style={styles.leftView}>
@@ -27,7 +30,7 @@ const OrderRow = ({ order, setOrder, setModalVisible }) => {
             </View>
             <View style={styles.rightView}>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#777', paddingBottom: 8 }}>
-                    <Text style={{ fontWeight: '600', fontSize: 16, letterSpacing: .5 }}>Giovanni Rana</Text>
+                    <Text style={{ fontWeight: '600', fontSize: 16, letterSpacing: .5 }}>{customers.find(customer => customer.id === order.customerId)?.name}</Text>
                 </View>
                 <View style={styles.table}>
                     <View style={styles.thead}>
