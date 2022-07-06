@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons'
 
 const BottomNavigation = ({ state, navigation }) => {
 
-    const [active, setActive] = useState('Products')
+    const [active, setActive] = useState('Home')
 
     return (
         <View style={styles.container}>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     tab: {
         width: 43,
         height: 43,
+        padding: 3,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 6,

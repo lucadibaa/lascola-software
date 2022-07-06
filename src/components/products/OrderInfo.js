@@ -2,27 +2,8 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import SearchableDropdown from 'react-native-searchable-dropdown'
 import { AntDesign } from '@expo/vector-icons'
 import { useState } from 'react'
-
-const order = [
-    {
-        id: 423,
-        title: 'Tonic',
-        price: 1.00,
-        qty: 2,
-    },
-    {
-        id: 234322,
-        title: 'Spritz',
-        price: 2.50,
-        qty: 1,
-    },
-    {
-        id: 2343243,
-        title: 'Coca Cola',
-        price: 1.50,
-        qty: 1,
-    }
-]
+import { clearProducts, createOrder } from '../../redux/slices/orderSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const customers = [
     {
@@ -77,7 +58,33 @@ const OrderRow = ({ product }) => {
 
 const OrderInfo = ({ handleSheetClose }) => {
 
+    const { orderProducts } = useSelector(state => state.order)
+    const dispatch = useDispatch()
+
     const [selectedCustomer, setSelectedCustomer] = useState('')
+
+    const handleCancel = () => {
+        dispatch(clearProducts())
+        handleSheetClose()
+    }
+
+    const hanldeOrder = paid => {
+        const customer = customers.find(c => c.name === selectedCustomer)
+
+        if (!customer) {
+            // create new customer
+        }
+
+        const order = {
+            customerId: customer?.id,
+            paid,
+            products: orderProducts
+        }
+
+        // create new order
+        dispatch(clearProducts())
+        handleSheetClose()
+    }
 
     return (
         <View style={styles.container}>
@@ -135,7 +142,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                 </View>
                 <FlatList
                     contentContainerStyle={styles.tbody}
-                    data={[...order, { id: -1, title: 'TOTALE', price: order.map(o => o.price).reduce((a, b) => a + b) }]}
+                    data={[...orderProducts, { id: -1, title: 'TOTALE', price: orderProducts.length > 0 ? orderProducts.map(o => o.price).reduce((a, b) => a + b) : 0 }]}
                     keyExtractor={order => order.id}
                     renderItem={({ item }) => <OrderRow product={item} />}
                 />
@@ -143,15 +150,15 @@ const OrderInfo = ({ handleSheetClose }) => {
             {/* Confirm Buttons */}
             <View style={styles.btnsContainer}>
                 <View>
-                    <TouchableOpacity style={styles.cancel} onPress={handleSheetClose}>
+                    <TouchableOpacity style={styles.cancel} onPress={handleCancel}>
                         <Text style={{ color: 'rgb(55, 65, 81)' }}>Annulla</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.notPaid} onPress={handleSheetClose}>
+                    <TouchableOpacity style={styles.notPaid} onPress={() => hanldeOrder(false)}>
                         <Text>Non Pagato</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.paid} onPress={handleSheetClose}>
+                    <TouchableOpacity style={styles.paid} onPress={() => hanldeOrder(false)}>
                         <Text>Pagato</Text>
                     </TouchableOpacity>
                 </View>

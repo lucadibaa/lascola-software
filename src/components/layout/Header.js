@@ -23,7 +23,7 @@ const Header = () => {
                     <Text style={styles.tabText}>Clienti</Text>
                 </Pressable>
                 <Pressable style={styles.tab}>
-                    <Text style={styles.tabText}>Report</Text>
+                    <Text style={styles.tabText}>Reports</Text>
                 </Pressable>
             </View>
         </SafeAreaView>

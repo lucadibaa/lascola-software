@@ -1,9 +1,18 @@
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { addProduct } from '../../redux/slices/orderSlice'
+import { useDispatch } from 'react-redux'
 
 const Product = ({ product }) => {
+
+    const dispatch = useDispatch()
+
+    const handlePress = () => {
+        dispatch(addProduct(product))
+    }
+
     return (
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={handlePress}>
             <View style={styles.topView}>
                 <Text style={styles.title}>{product.title}</Text>
             </View>

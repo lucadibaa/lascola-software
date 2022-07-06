@@ -2,99 +2,21 @@ import { View, Pressable, FlatList, StyleSheet } from 'react-native'
 import Product from './Product'
 import { AntDesign } from '@expo/vector-icons'
 import { useCallback } from 'react'
-
-const products = [
-    {
-        id: 304234,
-        title: 'Birra Moretti',
-        price: 1.50,
-        stock: 15,
-    },
-    {
-        id: 423,
-        title: 'Tonic',
-        price: 1.00,
-        stock: 30,
-    },
-    {
-        id: 234322,
-        title: 'Spritz',
-        price: 2.50,
-        stock: null,
-    },
-    {
-        id: 2343243,
-        title: 'Coca Cola',
-        price: 1.50,
-        stock: 23,
-    },
-    {
-        id: 4324324,
-        title: 'Chinotto',
-        price: 1.50,
-        stock: 1,
-    },
-    {
-        id: 0,
-        title: 'Birra Moretti',
-        price: 1.50,
-        stock: 15,
-    },
-    {
-        id: 1,
-        title: 'Tonic',
-        price: 1.00,
-        stock: 30,
-    },
-    {
-        id: 2,
-        title: 'Spritz',
-        price: 2.50,
-        stock: null,
-    },
-    {
-        id: 3,
-        title: 'Coca Cola',
-        price: 1.50,
-        stock: 23,
-    },
-    {
-        id: 4,
-        title: 'Chinotto',
-        price: 1.50,
-        stock: 1,
-    },
-    {
-        id: 345340,
-        title: 'Birra Moretti',
-        price: 1.50,
-        stock: 15,
-    },
-    {
-        id: 145334,
-        title: 'Tonic',
-        price: 1.00,
-        stock: 30,
-    },
-    {
-        id: 32432,
-        title: 'Spritz',
-        price: 2.50,
-        stock: null,
-    },
-    {
-        id: 323432,
-        title: 'Coca Cola',
-        price: 1.50,
-        stock: 23,
-    }
-]
+import { useSelector } from 'react-redux'
 
 const ProductsList = ({ bottomSheetModalRef }) => {
+
+    const { products } = useSelector(state => state.data)
+    const { orderProducts } = useSelector(state => state.order)
 
     const handleSheetOpen = useCallback(() => {
         bottomSheetModalRef.current?.present()
     }, [])
+
+    const handlePress = () => {
+        if (orderProducts.length === 0) return
+        handleSheetOpen()
+    }
 
     return (
         <View styel={{ position: 'relative' }}>
@@ -106,7 +28,7 @@ const ProductsList = ({ bottomSheetModalRef }) => {
                 keyExtractor={product => product.id}
                 renderItem={({ item }) => <Product product={item} />}
             />
-            <Pressable style={styles.checkBtn} onPress={handleSheetOpen}>
+            <Pressable style={{ ...styles.checkBtn, opacity: orderProducts.length === 0 ? 0 : 1 }} disabled={orderProducts.length === 0} onPress={handlePress}>
                 <AntDesign name="check" size={24} color="black" />
             </Pressable>
         </View >

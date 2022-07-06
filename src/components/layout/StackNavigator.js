@@ -5,6 +5,7 @@ import ProductsScreen from '../../screens/ProductsScreen'
 import Header from './Header'
 import BottomNavigation from './BottomNavigation'
 import OrdersScreen from '../../screens/OrdersScreen'
+import HomeScreen from '../../screens/HomeScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -21,7 +22,7 @@ const TabNavigator = () => {
                     <>
                         <Tab.Screen
                             name="Home"
-                            component={ProductsScreen}
+                            component={HomeScreen}
                             options={{
                                 header: () => <Header />
                             }}

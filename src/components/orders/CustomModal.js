@@ -17,7 +17,14 @@ const ProductRow = ({ product }) => {
 }
 
 const CustomModal = ({ order, modalVisible, setModalVisible }) => {
+
     if (!order) return null
+
+    const handlePress = paid => {
+        // update order
+        setModalVisible(false)
+    }
+
     return (
         <Modal
             animationType="slide"
@@ -50,10 +57,10 @@ const CustomModal = ({ order, modalVisible, setModalVisible }) => {
                         </View>
                     </View>
                     <View style={styles.bottomView}>
-                        <TouchableOpacity style={{ ...styles.button, backgroundColor: 'red' }} onPress={() => setModalVisible(!modalVisible)}                        >
+                        <TouchableOpacity style={{ ...styles.button, backgroundColor: 'red' }} onPress={() => handlePress(false)}                        >
                             <Text style={styles.textStyle}>No</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ ...styles.button, backgroundColor: 'green' }} onPress={() => setModalVisible(!modalVisible)}                        >
+                        <TouchableOpacity style={{ ...styles.button, backgroundColor: 'green' }} onPress={() => handlePress(true)}                        >
                             <Text style={styles.textStyle}>Si</Text>
                         </TouchableOpacity>
                     </View>
