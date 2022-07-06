@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const Header = () => {
+const Header = ({ navigation, active, setActive }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topView}>
@@ -16,7 +16,7 @@ const Header = () => {
                 <Pressable style={styles.tab}>
                     <Text style={styles.tabText}>Home</Text>
                 </Pressable>
-                <Pressable style={styles.tab}>
+                <Pressable style={styles.tab} onPress={() => { navigation.navigate('Products'); setActive('Products') }}>
                     <Text style={styles.tabText}>Prodotti</Text>
                 </Pressable>
                 <Pressable style={styles.tab}>

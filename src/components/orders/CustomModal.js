@@ -4,7 +4,7 @@ const ProductRow = ({ product }) => {
     return (
         <View style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }}>
             <View style={{ flex: 2 }} >
-                <Text style={styles.tbodyItemText}>{product.title}</Text>
+                <Text style={styles.tbodyItemText}>{product.name}</Text>
             </View>
             <View style={styles.tbodyItem}>
                 <Text style={styles.tbodyItemText}>{product.qty}</Text>
@@ -50,7 +50,7 @@ const CustomModal = ({ order, modalVisible, setModalVisible }) => {
                             </View>
                             <FlatList
                                 contentContainerStyle={styles.tbody}
-                                data={[...order?.products, (order?.products.length > 1 && { id: -1, title: 'TOTALE', price: order?.products.map(o => o.price).reduce((a, b) => a + b) })].filter(p => p)}
+                                data={[...order?.products, (order?.products.length > 1 && { id: -1, name: 'TOTALE', price: order?.products.map(o => o.price).reduce((a, b) => a + b) })].filter(p => p)}
                                 keyExtractor={product => product.id}
                                 renderItem={({ item }) => <ProductRow product={item} />}
                             />

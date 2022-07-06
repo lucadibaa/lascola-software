@@ -12,7 +12,7 @@ const orders = [
         products: [
             {
                 id: 423,
-                title: 'Tonic',
+                name: 'Tonic',
                 price: 1.00,
                 qty: 2,
             }
@@ -26,19 +26,19 @@ const orders = [
         products: [
             {
                 id: 423,
-                title: 'Tonic',
+                name: 'Tonic',
                 price: 1.00,
                 qty: 2,
             },
             {
                 id: 234322,
-                title: 'Spritz',
+                name: 'Spritz',
                 price: 2.50,
                 qty: 1,
             },
             {
                 id: 2343243,
-                title: 'Coca Cola',
+                name: 'Coca Cola',
                 price: 1.50,
                 qty: 1,
             }
@@ -52,19 +52,19 @@ const orders = [
         products: [
             {
                 id: 423,
-                title: 'Tonic',
+                name: 'Tonic',
                 price: 1.00,
                 qty: 2,
             },
             {
                 id: 234322,
-                title: 'Spritz',
+                name: 'Spritz',
                 price: 2.50,
                 qty: 1,
             },
             {
                 id: 2343243,
-                title: 'Coca Cola',
+                name: 'Coca Cola',
                 price: 1.50,
                 qty: 1,
             }

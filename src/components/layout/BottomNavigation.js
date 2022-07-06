@@ -4,9 +4,7 @@ import { Octicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 import { Entypo } from '@expo/vector-icons'
 
-const BottomNavigation = ({ state, navigation }) => {
-
-    const [active, setActive] = useState('Home')
+const BottomNavigation = ({ state, navigation, active, setActive }) => {
 
     return (
         <View style={styles.container}>
@@ -31,7 +29,7 @@ const BottomNavigation = ({ state, navigation }) => {
                     return (
                         <Pressable style={styles.tab} key={route.key} onPress={onPress}>
                             {route.name === 'Home' && <AntDesign name="dingding" size={24} color={active === route.name ? '#C100FE' : 'white'} />}
-                            {route.name === 'Products' && <Octicons name="apps" size={24} color={active === route.name ? '#C100FE' : 'white'} />}
+                            {route.name === 'CashDesk' && <Octicons name="apps" size={24} color={active === route.name ? '#C100FE' : 'white'} />}
                             {route.name === 'Orders' && <Entypo name="list" size={24} color={active === route.name ? '#C100FE' : 'white'} />}
                         </Pressable>
                     )

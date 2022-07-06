@@ -14,7 +14,7 @@ const Product = ({ product }) => {
     return (
         <Pressable style={styles.container} onPress={handlePress}>
             <View style={styles.topView}>
-                <Text style={styles.title}>{product.title}</Text>
+                <Text style={styles.title}>{product.name}</Text>
             </View>
             <View style={styles.bottomView}>
                 <Text style={styles.price}>{parseFloat(product.price).toFixed(2)} €</Text>

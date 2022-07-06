@@ -6,16 +6,37 @@ import Header from './Header'
 import BottomNavigation from './BottomNavigation'
 import OrdersScreen from '../../screens/OrdersScreen'
 import HomeScreen from '../../screens/HomeScreen'
+import CashDeskScreen from '../../screens/CashDeskScreen'
+import { useState } from 'react'
+import { collection, onSnapshot } from "firebase/firestore"
+import { db } from "../../../firebase"
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setProducts } from '../../redux/slices/dataSlice'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigator = () => {
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const products = collection(db, 'products')
+        const getData = onSnapshot(products, snapshot => {
+            dispatch(setProducts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
+        })
+
+        return () => {
+            getData()
+        }
+    }, [])
+
     const user = true
+    const [active, setActive] = useState('Home')
 
     return (
         <Tab.Navigator
-            tabBar={props => <BottomNavigation {...props} />}
+            tabBar={props => <BottomNavigation {...props} active={active} setActive={setActive} />}
         >
             {
                 user ?
@@ -24,21 +45,28 @@ const TabNavigator = () => {
                             name="Home"
                             component={HomeScreen}
                             options={{
-                                header: () => <Header />
+                                header: props => <Header {...props} active={active} setActive={setActive} />
                             }}
                         />
                         <Tab.Screen
-                            name="Products"
-                            component={ProductsScreen}
+                            name="CashDesk"
+                            component={CashDeskScreen}
                             options={{
-                                header: () => <Header />
+                                header: props => <Header {...props} active={active} setActive={setActive} />
                             }}
                         />
                         <Tab.Screen
                             name="Orders"
                             component={OrdersScreen}
                             options={{
-                                header: () => <Header />
+                                header: props => <Header {...props} active={active} setActive={setActive} />
+                            }}
+                        />
+                        <Tab.Screen
+                            name="Products"
+                            component={ProductsScreen}
+                            options={{
+                                header: props => <Header {...props} active={active} setActive={setActive} />
                             }}
                         />
                     </>

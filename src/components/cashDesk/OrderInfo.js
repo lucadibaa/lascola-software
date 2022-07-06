@@ -44,7 +44,7 @@ const OrderRow = ({ product }) => {
     return (
         <View style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }}>
             <View style={{ flex: 2 }} >
-                <Text style={styles.tbodyItemText}>{product.title}</Text>
+                <Text style={styles.tbodyItemText}>{product.name}</Text>
             </View>
             <View style={styles.tbodyItem}>
                 <Text style={styles.tbodyItemText}>{product.qty}</Text>
@@ -142,7 +142,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                 </View>
                 <FlatList
                     contentContainerStyle={styles.tbody}
-                    data={[...orderProducts, { id: -1, title: 'TOTALE', price: orderProducts.length > 0 ? orderProducts.map(o => o.price).reduce((a, b) => a + b) : 0 }]}
+                    data={[...orderProducts, { id: -1, name: 'TOTALE', price: orderProducts.length > 0 ? orderProducts.map(o => o.price).reduce((a, b) => a + b) : 0 }]}
                     keyExtractor={order => order.id}
                     renderItem={({ item }) => <OrderRow product={item} />}
                 />

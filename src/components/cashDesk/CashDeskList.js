@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 
-const ProductsList = ({ bottomSheetModalRef }) => {
+const CashDeskList = ({ bottomSheetModalRef }) => {
 
     const { products } = useSelector(state => state.data)
     const { orderProducts } = useSelector(state => state.order)
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ProductsList
+export default CashDeskList

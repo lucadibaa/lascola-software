@@ -7,7 +7,6 @@ import { AuthProvider } from './src/customHooks/useAuth'
 import store from './src/redux/store'
 
 const App = () => {
-
   return (
     <Provider store={store}>
       <SafeAreaProvider>
