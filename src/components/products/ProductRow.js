@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-const ProductRow = ({ product }) => {
+const ProductRow = ({ product, setUpdateModal }) => {
     return (
-        <View style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }}>
+        <TouchableOpacity style={{ ...styles.tbodyRow, borderTopWidth: product.id === -1 ? 1 : 0, borderTopColor: 'rgb(156, 163, 175)' }} onPress={() => setUpdateModal(product)}>
             <View style={{ flex: 2 }} >
                 <Text style={styles.tbodyItemText}>{product.name}</Text>
             </View>
@@ -12,7 +12,7 @@ const ProductRow = ({ product }) => {
             <View style={styles.tbodyItem}>
                 <Text style={{ ...styles.tbodyItemText, fontSize: product.id === -1 ? 18 : 14, fontWeight: product.id === -1 ? '500' : 'normal' }}>{parseFloat(product.price * (product.qty || 1)).toFixed(2)} €</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

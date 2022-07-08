@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useState } from 'react'
 
-const CustomInput = ({ value, setValue, placeholder, secureTextEntry }) => {
+const CustomInput = ({ value, setValue, placeholder, secureTextEntry, keyboardType }) => {
 
     const [visible, setVisible] = useState(false)
 
@@ -16,6 +16,7 @@ const CustomInput = ({ value, setValue, placeholder, secureTextEntry }) => {
                     placeholder={placeholder}
                     secureTextEntry={visible ? false : secureTextEntry}
                     style={styles.input}
+                    keyboardType={keyboardType}
                 />
                 {secureTextEntry && <Ionicons name={visible ? 'eye-off' : 'eye'} size={24} onPress={() => setVisible(!visible)} style={{ color: '#4632A1', position: 'absolute', right: 5 }} />}
             </View>

@@ -1,5 +1,7 @@
+import { doc, updateDoc } from '@firebase/firestore'
 import { View, Text, Modal, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
+import { db } from '../../../firebase'
 
 const ProductRow = ({ product }) => {
     return (
@@ -24,7 +26,11 @@ const CustomModal = ({ order, modalVisible, setModalVisible }) => {
     if (!order) return null
 
     const handlePress = paid => {
-        // update order
+        console.log(order.id)
+        const ordersRef = doc(db, 'orders', order.id)
+        updateDoc(ordersRef, {
+            paid
+        })
         setModalVisible(false)
     }
 

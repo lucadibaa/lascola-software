@@ -1,15 +1,23 @@
-import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
+import { useState } from 'react'
+import { View, Text, StyleSheet, FlatList, Dimensions, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
+import AddProductModal from '../components/products/AddProductModal'
 import ProductRow from '../components/products/ProductRow'
+import UpdateProductModal from '../components/products/UpdateProductModal'
 
 const ProductsScreen = () => {
 
     const { products } = useSelector(state => state.data)
 
+    const [modalVisible, setModalVisible] = useState(false)
+    const [updateModal, setUpdateModal] = useState(false)
+
     return (
         <View style={styles.container}>
             <View style={styles.topView}>
-
+                <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 8 }} onPress={() => setModalVisible(true)}>
+                    <Text style={{ color: '#fff' }}>Aggiungi Prodotto</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.bottomView}>
                 <View style={styles.table}>
@@ -28,10 +36,12 @@ const ProductsScreen = () => {
                         contentContainerStyle={styles.tbody}
                         data={products}
                         keyExtractor={product => product.id}
-                        renderItem={({ item }) => <ProductRow product={item} />}
+                        renderItem={({ item }) => <ProductRow product={item} setUpdateModal={setUpdateModal} />}
                     />
                 </View>
             </View>
+            <AddProductModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+            <UpdateProductModal updateModal={updateModal} setUpdateModal={setUpdateModal} />
         </View>
     )
 }
@@ -42,7 +52,9 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get('window').height
     },
     topView: {
-
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10
     },
     bottomView: {
         alignItems: 'center',
