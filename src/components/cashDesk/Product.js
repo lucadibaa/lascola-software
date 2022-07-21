@@ -1,15 +1,19 @@
 import { View, Text, StyleSheet, Pressable, Dimensions, Image } from 'react-native'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { addProduct } from '../../redux/slices/orderSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Product = ({ product }) => {
 
     const dispatch = useDispatch()
+    const { orderProducts } = useSelector(state => state.order)
 
     const handlePress = () => {
+        if (product.stock === 0) return alert('Prodotto terminato')
         dispatch(addProduct({ ...product, qty: 1 }))
     }
+
+    const badge = orderProducts?.find(p => p.id === product.id)?.qty
 
     return (
         <Pressable style={styles.container} onPress={handlePress}>
@@ -31,12 +35,16 @@ const Product = ({ product }) => {
                     <AntDesign name="exclamationcircleo" size={18} color="red" />
                 </View>
             </View>
+            <View style={{ ...styles.badgeContainer, display: badge ? 'flex' : 'none' }}>
+                <Text style={styles.badge}>{badge}</Text>
+            </View>
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        position: 'relative',
         margin: 16,
         fontWeight: '600',
         width: Dimensions.get('window').width / 2 - 32,
@@ -44,7 +52,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#F2F2F2',
         padding: 6,
-        paddingBottom: 10
+        paddingBottom: 10,
+        zIndex: 999
     },
     banner: {
         width: '100%',
@@ -78,6 +87,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 6,
         borderRadius: 15,
+    },
+    badgeContainer: {
+        position: 'absolute',
+        right: -12,
+        top: -12,
+        width: 25,
+        height: 25,
+        backgroundColor: 'blue',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 999,
+    },
+    badge: {
+        color: '#fff',
     }
 })
 
