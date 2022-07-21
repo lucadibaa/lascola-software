@@ -3,7 +3,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
 import CustomInput from '../auth/CustomInput'
 import { db } from '../../../firebase'
-import { collection, doc, updateDoc } from '@firebase/firestore'
+import { collection, deleteField, doc, updateDoc } from '@firebase/firestore'
 
 const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
 
@@ -21,7 +21,7 @@ const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
 
     useEffect(() => {
         updateModal.name && setName(updateModal.name)
-        updateModal.stock && setStock(String(updateModal.stock))
+        updateModal.stock >= 0 && setStock(String(updateModal.stock))
         updateModal.price && setPrice(String(updateModal.price))
         updateModal.purchasePrice && setPurchasePrice(String(updateModal.purchasePrice))
     }, [updateModal])
@@ -32,10 +32,10 @@ const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
         const productsRef = doc(db, 'products', updateModal.id)
 
         const updatedProduct = {
-            name
+            name,
+            stock: !isNaN(parseFloat(stock)) ? parseFloat(stock) : deleteField()
         }
 
-        if (stock) updatedProduct.stock = parseFloat(stock)
         if (price) updatedProduct.price = parseFloat(price)
         if (purchasePrice) updatedProduct.purchasePrice = parseFloat(purchasePrice)
 
