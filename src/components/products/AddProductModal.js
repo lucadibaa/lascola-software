@@ -12,6 +12,13 @@ const AddProductModal = ({ modalVisible, setModalVisible }) => {
     const [price, setPrice] = useState('')
     const [purchasePrice, setPurchasePrice] = useState('')
 
+    const reset = () => {
+        setName('')
+        setStock('')
+        setPrice('')
+        setPurchasePrice('')
+    }
+
     const handleSubmit = () => {
         const productsRef = collection(db, 'products')
         const newProduct = {
@@ -23,6 +30,7 @@ const AddProductModal = ({ modalVisible, setModalVisible }) => {
         if (purchasePrice) newProduct.purchasePrice = parseFloat(purchasePrice)
 
         addDoc(productsRef, newProduct)
+        reset()
         setModalVisible(false)
     }
 

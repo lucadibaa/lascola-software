@@ -8,10 +8,8 @@ const Product = ({ product }) => {
     const dispatch = useDispatch()
 
     const handlePress = () => {
-        dispatch(addProduct(product))
+        dispatch(addProduct({ ...product, qty: 1 }))
     }
-
-    console.log(product.stock)
 
     return (
         <Pressable style={styles.container} onPress={handlePress}>

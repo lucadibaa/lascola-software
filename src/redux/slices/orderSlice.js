@@ -10,7 +10,7 @@ const orderSlice = createSlice({
     initialState,
     reducers: {
         addProduct: (state, { payload }) => {
-            state.orderProducts = [...state.orderProducts, payload]
+            state.orderProducts = state.orderProducts?.find(p => p.id === payload.id) ? state.orderProducts?.map(p => p.id === payload.id ? { ...p, qty: p.qty + 1 } : p) : [...state.orderProducts, payload]
         },
         clearProducts: state => {
             state.orderProducts = []

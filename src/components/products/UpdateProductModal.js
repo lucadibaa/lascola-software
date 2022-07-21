@@ -12,6 +12,13 @@ const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
     const [price, setPrice] = useState('')
     const [purchasePrice, setPurchasePrice] = useState('')
 
+    const reset = () => {
+        setName('')
+        setStock('')
+        setPrice('')
+        setPurchasePrice('')
+    }
+
     useEffect(() => {
         updateModal.name && setName(updateModal.name)
         updateModal.stock && setStock(String(updateModal.stock))
@@ -23,12 +30,22 @@ const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
 
     const handleSubmit = () => {
         const productsRef = doc(db, 'products', updateModal.id)
-        updateDoc(productsRef, {
-            name,
-            stock: stock && parseFloat(stock),
-            price: price && parseFloat(price),
-            purchasePrice: purchasePrice && parseFloat(purchasePrice)
-        })
+
+        const updatedProduct = {
+            name
+        }
+
+        if (stock) updatedProduct.stock = parseFloat(stock)
+        if (price) updatedProduct.price = parseFloat(price)
+        if (purchasePrice) updatedProduct.purchasePrice = parseFloat(purchasePrice)
+
+        updateDoc(productsRef, updatedProduct)
+        reset()
+        setUpdateModal(false)
+    }
+
+    const handleClose = () => {
+        reset()
         setUpdateModal(false)
     }
 
@@ -42,7 +59,7 @@ const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <View style={styles.topView}>
-                        <TouchableOpacity style={styles.close} onPress={() => setUpdateModal(false)}>
+                        <TouchableOpacity style={styles.close} onPress={handleClose}>
                             <AntDesign name="close" size={22} color="#444" />
                         </TouchableOpacity>
                     </View>

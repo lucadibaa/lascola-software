@@ -47,8 +47,8 @@ const OrderRow = ({ order, setOrder, setModalVisible }) => {
                     <FlatList
                         contentContainerStyle={styles.tbody}
                         data={[...order.products, (order.products.length > 1 && { id: -1, name: 'TOTALE', price: order.products.map(o => o.price).reduce((a, b) => a + b) })].filter(p => p)}
-                        keyExtractor={product => product.id}
-                        listKey={product => product.id}
+                        keyExtractor={() => Math.floor(Math.random() * 1000000)}
+                        listKey={() => Math.floor(Math.random() * 1000000)}
                         renderItem={({ item }) => <ProductRow product={item} />}
                     />
                 </View>

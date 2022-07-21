@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { clearProducts } from '../../redux/slices/orderSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { db } from '../../../firebase'
-import { addDoc, collection } from '@firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from '@firebase/firestore'
 
 const OrderRow = ({ product }) => {
     return (
@@ -65,6 +65,13 @@ const OrderInfo = ({ handleSheetClose }) => {
 
             addDoc(ordersRef, order)
         }
+
+        orderProducts?.forEach(p => {
+            if (!p.stock) return
+
+            const productsRef = doc(db, 'products', p.id)
+            updateDoc(productsRef, { stock: p.stock - p.qty })
+        })
         dispatch(clearProducts())
         handleSheetClose()
     }

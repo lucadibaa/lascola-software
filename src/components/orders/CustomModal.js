@@ -26,7 +26,6 @@ const CustomModal = ({ order, modalVisible, setModalVisible }) => {
     if (!order) return null
 
     const handlePress = paid => {
-        console.log(order.id)
         const ordersRef = doc(db, 'orders', order.id)
         updateDoc(ordersRef, {
             paid
