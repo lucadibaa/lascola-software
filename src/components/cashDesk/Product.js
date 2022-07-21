@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { View, Text, StyleSheet, Pressable, Dimensions, Image } from 'react-native'
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { addProduct } from '../../redux/slices/orderSlice'
 import { useDispatch } from 'react-redux'
 
@@ -11,23 +11,27 @@ const Product = ({ product }) => {
         dispatch(addProduct(product))
     }
 
+    console.log(product.stock)
+
     return (
         <Pressable style={styles.container} onPress={handlePress}>
+            <Image
+                style={styles.banner}
+                source={{ uri: product.image }}
+            />
             <View style={styles.topView}>
                 <Text style={styles.title}>{product.name}</Text>
             </View>
             <View style={styles.bottomView}>
                 <Text style={styles.price}>{parseFloat(product.price).toFixed(2)} €</Text>
-                {
-                    product.stock &&
-                    <>
-                        <Text style={{ marginHorizontal: 5, fontSize: 16 }}>|</Text>
-                        <View style={styles.stock}>
-                            <Text style={{ marginRight: 5, fontSize: 16 }}>{product.stock}</Text>
-                            <MaterialCommunityIcons name="history" size={18} color="black" />
-                        </View>
-                    </>
-                }
+                <Text style={{ marginHorizontal: 5, fontSize: 16 }, product?.stock === undefined && { display: 'none' }}>|</Text>
+                <View style={{ ...styles.stock, display: product?.stock ? 'flex' : 'none' }}>
+                    <Text style={{ marginRight: 5, fontSize: 16 }}>{product.stock}</Text>
+                    <MaterialCommunityIcons name="history" size={18} color="black" />
+                </View>
+                <View style={{ ...styles.stock, display: product?.stock === 0 ? 'flex' : 'none' }}>
+                    <AntDesign name="exclamationcircleo" size={18} color="red" />
+                </View>
             </View>
         </Pressable>
     )
@@ -39,30 +43,36 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         width: Dimensions.get('window').width / 2 - 32,
         justifyContent: 'space-between',
-        paddingVertical: 15,
-        borderRadius: 15,
-        backgroundColor: '#F2F2F2'
+        borderRadius: 12,
+        backgroundColor: '#F2F2F2',
+        padding: 6,
+        paddingBottom: 10
+    },
+    banner: {
+        width: '100%',
+        height: 80,
+        borderRadius: 12,
     },
     topView: {
-        marginBottom: 13
+        marginVertical: 6
     },
     title: {
-        fontWeight: 'bold',
-        textAlign: 'center',
-        textTransform: 'uppercase',
-        paddingHorizontal: 5,
-        letterSpacing: .6
+        fontSize: 15,
+        fontWeight: '500',
+        color: '#3a3a3a',
+        paddingHorizontal: 2,
+        letterSpacing: .3
     },
     bottomView: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: 12
     },
     price: {
-        padding: 6,
-        borderRadius: 15,
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#3a3a3a',
+        paddingHorizontal: 2,
     },
     stock: {
         flexDirection: 'row',

@@ -14,12 +14,15 @@ const AddProductModal = ({ modalVisible, setModalVisible }) => {
 
     const handleSubmit = () => {
         const productsRef = collection(db, 'products')
-        addDoc(productsRef, {
-            name,
-            stock: stock && parseFloat(stock),
-            price: price && parseFloat(price),
-            purchasePrice: purchasePrice && parseFloat(purchasePrice)
-        })
+        const newProduct = {
+            name
+        }
+
+        if (stock) newProduct.stock = parseFloat(stock)
+        if (price) newProduct.price = parseFloat(price)
+        if (purchasePrice) newProduct.purchasePrice = parseFloat(purchasePrice)
+
+        addDoc(productsRef, newProduct)
         setModalVisible(false)
     }
 
