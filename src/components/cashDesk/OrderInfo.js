@@ -48,7 +48,7 @@ const OrderInfo = ({ handleSheetClose }) => {
                     const customer = { id: res.id, name: selectedCustomer }
                     const order = {
                         customerId: customer?.id,
-                        date: new Date().toString(),
+                        date: new Date(),
                         paid,
                         products: orderProducts
                     }
@@ -58,7 +58,7 @@ const OrderInfo = ({ handleSheetClose }) => {
         } else {
             const order = {
                 customerId: customer?.id ? customer.id : null,
-                date: new Date().toString(),
+                date: new Date(),
                 paid,
                 products: orderProducts
             }

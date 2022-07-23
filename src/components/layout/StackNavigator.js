@@ -8,7 +8,7 @@ import OrdersScreen from '../../screens/OrdersScreen'
 import HomeScreen from '../../screens/HomeScreen'
 import CashDeskScreen from '../../screens/CashDeskScreen'
 import { useState } from 'react'
-import { collection, onSnapshot } from "firebase/firestore"
+import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore"
 import { db } from "../../../firebase"
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -19,11 +19,14 @@ const Tab = createBottomTabNavigator()
 const TabNavigator = () => {
 
     const dispatch = useDispatch()
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - 2)
 
     useEffect(() => {
         const productsRef = collection(db, 'products')
         const customersRef = collection(db, 'customers')
         const ordersRef = collection(db, 'orders')
+        const ordersQuery = query(ordersRef, where("date", '>=', startDate), orderBy("date", "desc"))
 
         const getProducts = onSnapshot(productsRef, snapshot => {
             dispatch(setProducts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
@@ -31,8 +34,8 @@ const TabNavigator = () => {
         const getCustomers = onSnapshot(customersRef, snapshot => {
             dispatch(setCustomers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
         })
-        const getOrders = onSnapshot(ordersRef, snapshot => {
-            dispatch(setOrders(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))))
+        const getOrders = onSnapshot(ordersQuery, snapshot => {
+            dispatch(setOrders(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), date: new Date(doc.data().date.toDate()).toString() }))))
         })
 
         return () => {
