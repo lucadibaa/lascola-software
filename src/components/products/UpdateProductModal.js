@@ -3,7 +3,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
 import CustomInput from '../auth/CustomInput'
 import { db } from '../../../firebase'
-import { collection, deleteField, doc, updateDoc } from '@firebase/firestore'
+import { deleteField, doc, updateDoc } from '@firebase/firestore'
 
 const UpdateProductModal = ({ updateModal, setUpdateModal }) => {
 

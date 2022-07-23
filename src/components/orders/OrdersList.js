@@ -10,11 +10,18 @@ const OrdersList = () => {
 
     const { orders } = useSelector(state => state.data)
 
+
     return (
         <View>
             <FlatList
                 contentContainerStyle={styles.list}
-                data={orders}
+                data={orders?.filter(o => {
+                    const today = new Date()
+                    const yesterday = new Date()
+                    yesterday.setDate(yesterday.getDate() - 1)
+
+                    if (new Date(o.date).toDateString() === today.toDateString() || new Date(o.date).toDateString() === yesterday.toDateString()) return o
+                })?.sort((a, b) => new Date(b?.date) - new Date(a?.date))}
                 keyExtractor={item => item.id}
                 listKey={item => item.id}
                 renderItem={({ item }) => <OrderRow order={item} setOrder={setOrder} setModalVisible={setModalVisible} />}
